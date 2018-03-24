@@ -20,8 +20,8 @@ public class ClienteResource {
 	private ClienteService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?>  find(@PathVariable Long id) throws ObjectNotFoundException {
-		Cliente cliente = service.buscar(id);
+	public ResponseEntity<Cliente>  find(@PathVariable Long id) throws ObjectNotFoundException {
+		Cliente cliente = service.find(id);
 		return ResponseEntity.ok(cliente);
 	}
 
