@@ -2,6 +2,9 @@ package com.tgs.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import com.tgs.cursomc.domain.Categoria;
 
 public class CategoriaDTO implements Serializable {
@@ -9,6 +12,9 @@ public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	
+	@NotEmpty(message="O nome não pode ser vazio")
+	@Size(min=5, max=80, message="O nome deve ter entre 5 a 80 caracteres")
 	private String nome;
 	
 	public CategoriaDTO() {}
