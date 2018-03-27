@@ -3,6 +3,8 @@ package com.tgs.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -10,9 +12,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.tgs.cursomc.domain.Cidade;
 import com.tgs.cursomc.domain.Cliente;
+import com.tgs.cursomc.domain.Endereco;
+import com.tgs.cursomc.domain.enums.TipoCliente;
 import com.tgs.cursomc.dto.ClienteDTO;
+import com.tgs.cursomc.dto.ClientePostDTO;
+import com.tgs.cursomc.repositories.CidadeRepository;
 import com.tgs.cursomc.repositories.ClienteRepository;
+import com.tgs.cursomc.repositories.EnderecoRepository;
 import com.tgs.cursomc.services.exceptions.DataIntegrityException;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -22,6 +30,10 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository repository;
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Long id) throws ObjectNotFoundException {
 		Optional<Cliente> cliente = repository.findById(id);
@@ -57,9 +69,31 @@ public class ClienteService {
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir uma Cliente que possui pedidos");
 		}		
+	}	
+
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		obj = repository.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
-	
+
 	public Cliente fromDtoToObj(ClienteDTO dto) {
 		return new Cliente(dto.getId(), dto.getNome(), dto.getEmail(), null, null);
+	}
+	
+	public Cliente fromDtoToObj(@Valid ClientePostDTO dto) {
+		Cliente cliente =
+				new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpfCnpj(), TipoCliente.toEnum(dto.getTipoCliente()));
+		Cidade cidade = cidadeRepository.getOne(dto.getIdCidade());
+		Endereco endereco = 
+				new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(), dto.getBairro(), dto.getCep(), cliente, cidade);
+		cliente.getEnderecos().add(endereco);
+		cliente.getTelefones().add(dto.getTelefone1());
+		
+		if(dto.getTelefone2()!= null) cliente.getTelefones().add(dto.getTelefone2());
+		if(dto.getTelefone3()!= null) cliente.getTelefones().add(dto.getTelefone3());		
+		
+		return cliente;
 	}
 }
