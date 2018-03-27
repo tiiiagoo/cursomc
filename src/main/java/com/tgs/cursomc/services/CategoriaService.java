@@ -32,11 +32,16 @@ public class CategoriaService {
 	public Categoria insert(Categoria obj) {	
 		obj.setId(null);
 		return repository.save(obj);
-	}
+	}	
 
 	public Categoria update(Categoria obj) throws ObjectNotFoundException {	
-		find(obj.getId());
+		Categoria categoria = find(obj.getId());
+		updateData(categoria, obj);
 		return repository.save(obj);
+	}
+
+	private void updateData(Categoria categoria, Categoria obj) {
+		categoria.setNome(obj.getNome());		
 	}
 
 	public void delete(Long id) throws ObjectNotFoundException {		
