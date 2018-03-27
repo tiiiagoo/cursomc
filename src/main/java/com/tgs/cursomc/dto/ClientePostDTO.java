@@ -6,6 +6,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.tgs.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClientePostDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,11 +23,19 @@ public class ClientePostDTO implements Serializable {
 	
 	private String  cpfCnpj;
 	private Integer tipoCliente;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private String 	logradouro;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private String 	numero;
 	private String 	complemento;
 	private String 	bairro;
+	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private String 	cep;	
+	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private String 	telefone1;
 	private String 	telefone2;
 	private String 	telefone3;
