@@ -66,7 +66,7 @@ public class ClienteResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO dto, @PathVariable Long id) throws ObjectNotFoundException{
-		Cliente obj = service.fromDtoToObj(dto);
+		Cliente obj = service.fromDtoToObj(dto);		
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
