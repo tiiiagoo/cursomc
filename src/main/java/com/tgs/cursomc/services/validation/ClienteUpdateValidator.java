@@ -47,5 +47,5 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 					.addConstraintViolation();
 		}
 		return list.isEmpty();
-	}
+	}	
 }
