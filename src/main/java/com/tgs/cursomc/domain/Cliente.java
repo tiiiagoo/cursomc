@@ -84,7 +84,7 @@ public class Cliente implements Serializable {
 	}
 	public void setTipoCliente(TipoCliente tipoCliente) {
 		this.tipoCliente = tipoCliente.getCod();
-	}
+	}	
 	
 	public List<Endereco> getEnderecos() {
 		return enderecos;
@@ -101,18 +101,15 @@ public class Cliente implements Serializable {
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
 	}	
-
+	
+	@JsonIgnore
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
-	}
-
-	public void setTipoCliente(Integer tipoCliente) {
-		this.tipoCliente = tipoCliente;
-	}
+	}	
 
 	@Override
 	public int hashCode() {
