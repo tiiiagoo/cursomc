@@ -14,6 +14,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.tgs.cursomc.domain.Pedido;
 import com.tgs.cursomc.services.PedidoService;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 @RestController
 @RequestMapping(value="/pedidos")
 public class PedidoResource {
@@ -28,7 +30,7 @@ public class PedidoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Pedido pedido){		
+	public ResponseEntity<Void> insert(@RequestBody Pedido pedido) throws ObjectNotFoundException{		
 		pedido = service.insert(pedido);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(pedido.getId()).toUri();

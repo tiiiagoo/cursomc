@@ -17,23 +17,28 @@ import com.tgs.cursomc.repositories.ItemPedidoRepository;
 import com.tgs.cursomc.repositories.PagamentoRepository;
 import com.tgs.cursomc.repositories.PedidoRepository;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 @Service
 public class PedidoService {
 	
 	@Autowired
-	private PedidoRepository repository;
+	private PedidoRepository 		repository;
 	
 	@Autowired
-	private BoletoService boletoService;
+	private BoletoService 			boletoService;
 	
 	@Autowired
-	private PagamentoRepository pagamentoRepository;
+	private PagamentoRepository 	pagamentoRepository;
 	
 	@Autowired
-	private ProdutoService produtoService;
+	private ProdutoService 			produtoService;
 	
 	@Autowired
-	private ItemPedidoRepository itemPedidoRepository;
+	private ItemPedidoRepository 	itemPedidoRepository;
+	
+	@Autowired
+	private ClienteService 			clienteService;
 
 	public Pedido find(Long id) {
 		Optional<Pedido> pedido = repository.findById(id);
@@ -41,9 +46,10 @@ public class PedidoService {
 	}
 	
 	@Transactional
-	public @Valid Pedido insert(Pedido pedido) {
+	public @Valid Pedido insert(Pedido pedido) throws ObjectNotFoundException {		
 		pedido.setId(null);
 		pedido.setDataPedido(new Date());
+		pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
 		pedido.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
 		pedido.getPagamento().setPedido(pedido);
 		if(pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -54,7 +60,8 @@ public class PedidoService {
 		pagamentoRepository.save(pedido.getPagamento());
 		for(ItemPedido item : pedido.getItens()) {
 			item.setDesconto(0.0);
-			item.setPreco(produtoService.find(item.getProduto().getId()).getPreco());
+			item.setProduto(produtoService.find(item.getProduto().getId()));
+			item.setPreco(item.getProduto().getPreco());
 			item.setPedido(pedido);
 		}
 		itemPedidoRepository.saveAll(pedido.getItens());
