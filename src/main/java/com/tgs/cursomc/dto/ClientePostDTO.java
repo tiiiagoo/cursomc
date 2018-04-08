@@ -13,29 +13,32 @@ public class ClientePostDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="Preenchimento do nome é obrigatório")
 	@Size(min=5, max=80, message="O nome deve ter entre 5 a 100 caracteres")
 	private String nome;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="Preenchimento do email obrigatório")
 	@Email(message="Email inválido")
 	private String email;
 	
 	private String  cpfCnpj;
 	private Integer tipoCliente;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="Preenchimento da senha é obrigatório")
+	private String senha;
+	
+	@NotEmpty(message="Preenchimento do logradouro é obrigatório")
 	private String 	logradouro;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="Preenchimento do numero é obrigatório")
 	private String 	numero;
 	private String 	complemento;
 	private String 	bairro;
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="Preenchimento do cep é obrigatório")
 	private String 	cep;	
 	
-	@NotEmpty(message="Preenchimento obrigatório")
+	@NotEmpty(message="Preenchimento do telefone1 é obrigatório")
 	private String 	telefone1;
 	private String 	telefone2;
 	private String 	telefone3;
@@ -73,6 +76,14 @@ public class ClientePostDTO implements Serializable {
 
 	public void setTipoCliente(Integer tipoCliente) {
 		this.tipoCliente = tipoCliente;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public String getLogradouro() {
