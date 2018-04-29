@@ -1,5 +1,6 @@
 package com.tgs.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tgs.cursomc.domain.Cidade;
 import com.tgs.cursomc.domain.Cliente;
@@ -40,6 +42,8 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder; 
+	@Autowired
+	private AmazonS3Service amazonS3Service;
 
 	public Cliente find(Long id) throws ObjectNotFoundException {
 		
@@ -107,5 +111,9 @@ public class ClienteService {
 		if(dto.getTelefone3()!= null) cliente.getTelefones().add(dto.getTelefone3());		
 		
 		return cliente;
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return amazonS3Service.uploadFile(multipartFile);
 	}
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tgs.cursomc.domain.Cliente;
@@ -42,7 +43,7 @@ public class ClienteResource {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>>  findAll(){
 		List<Cliente> list = service.findAll();
-		List<ClienteDTO> listDto = list.stream().map(categoria -> new ClienteDTO(categoria)).collect(Collectors.toList());
+		List<ClienteDTO> listDto = list.stream().map(cliente -> new ClienteDTO(cliente)).collect(Collectors.toList());
 		return ResponseEntity.ok(listDto);
 	}
 	
@@ -81,6 +82,12 @@ public class ClienteResource {
 	public ResponseEntity<Void> delete(@PathVariable Long id) throws ObjectNotFoundException{
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/picture", method=RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@PathVariable(name="file") MultipartFile file){
+		URI uri = service.uploadProfilePicture(file);
+		return ResponseEntity.created(uri).build();
 	}
 
 }

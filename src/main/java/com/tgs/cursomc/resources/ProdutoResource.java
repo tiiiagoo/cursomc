@@ -2,9 +2,12 @@ package com.tgs.cursomc.resources;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,11 +23,14 @@ import com.tgs.cursomc.services.ProdutoService;
 @RequestMapping(value="/produtos")
 public class ProdutoResource {
 	
-	@Autowired
-	private ProdutoService service;
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@Autowired
+	private ProdutoService service;	
+	
+	@GetMapping("/{id}")
 	public ResponseEntity<Produto>  find(@PathVariable Long id) {
+		LOG.info("Getting produto with ID {}.", id);
 		Produto produto = service.find(id);
 		return ResponseEntity.ok(produto);
 	}

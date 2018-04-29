@@ -22,11 +22,11 @@ public class ProdutoService {
 	private ProdutoRepository repository;
 	
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private CategoriaRepository categoriaRepository;	
 
-	public Produto find(Long id) {
-		Optional<Produto> produto = repository.findById(id);
-		return produto.orElse(null);
+	public Produto find(Long id) {			
+			Optional<Produto> produto = repository.findById(id);	
+			return produto.orElse(null);
 	}
 	
 	public Page<Produto> search(String nome, List<Long> ids, Integer page, Integer linesPerPage, String orderBy, String direction){
